@@ -1,0 +1,66 @@
+﻿@model FamilyTree.Models.TreeWrapper
+<div class="hidden">
+    @foreach (var item in Model.nodes)
+    {
+        <div class="node">
+            <div class="name">
+                @item.Name
+            </div>
+            <div class="father">
+                @item.Father
+            </div>
+            <div class="mother">
+                @item.Mother
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    <div id="dataContainer" class="col-md-8">
+        <div id="canvasSping" style="text-align:center"></div>
+        <button class="btn btn-primary" onclick="drawGraphSpring()">Redraw</button>
+        <div style="clear:both"></div>
+        <div id="canvasOrdered"  style="text-align:center"></div>
+        <button class="btn btn-primary" onclick="drawGraphOrdered()">Redraw</button>
+        <div style="clear:both"></div>
+    </div>
+    <div class="col-md-4 form-group">
+        <div class="modal-header">
+            <h4 class="modal-title">Add Family Member</h4>
+        </div>
+        <div class="modal-body">
+            @using (Html.BeginForm("addNode", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+            {
+                <label for="Name">Child Name: </label>
+                <input class="form-control" id="Name" placeholder="Name" name="Name" />
+                <input class="hidden" placeholder="TreeId" name="TreeId" value="@Model.tree.Id" />
+                <label for="Father">Father: </label>
+                <select class="form-control" id="Father" name="Father">
+                    <option>None</option>
+                    @foreach (var item in Model.nodes)
+                    {
+                        <option>@item.Name</option>
+                    }
+                </select>
+                    <label for="Mother">Mother: </label>
+                    <select class="form-control" id="Mother" name="Mother">
+                        <option>None</option>
+                        @foreach (var item in Model.nodes)
+                        {
+                            <option>@item.Name</option>
+                        }
+                    </select>
+                    <button type="submit" class="btn btn-success pull-right">Save</button>
+            }
+            <br />
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        addNodes();
+        drawGraphSpring();
+        drawGraphOrdered();
+    });
+</script>

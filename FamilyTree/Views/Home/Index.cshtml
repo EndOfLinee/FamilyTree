@@ -1,0 +1,52 @@
+﻿@model FamilyTree.Models.Trees
+
+<div class="row center-form">
+    <div class="col-md-3"></div>
+    <div class="form-group col-md-6">
+        @if (Model.read.Count() > 0)
+            {
+            <label for="treeName">Tree Name:</label>
+                <select class="form-control" id="treeName">
+                    @{
+                        foreach (var item in Model.read)
+                        {
+                            {
+                                <option>@item.TreeName</option>
+                            }
+                        }
+                    }
+                </select>
+                <button onclick="onClick(this)" class="btn btn-primary pull-right">Open</button>
+                        }
+        <button class="btn btn-danger" data-toggle="modal" data-target="#myModal">Create New</button>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+
+<script>
+    function onClick(elem) {
+        window.location.href = "/Home/Tree/" + $("#treeName option:selected").html();
+    }
+</script>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            @using (Html.BeginForm("addTree", "Home", FormMethod.Post))
+            {
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Create New Tree</h4>
+                </div>
+                <div class="modal-body">
+                    @Html.TextBoxFor(m => Model.add.TreeName, new { @class = "form-control", @placeholder = "Tree Name" })
+                    <button type="submit" class="btn btn-success pull-right">Save</button>
+                    <br />
+                </div>
+            }
+        </div>
+
+    </div>
+</div>
